@@ -1,3 +1,4 @@
+import EssentialFeed
 import Foundation
 
 // swiftlint:disable force_unwrapping
@@ -18,6 +19,26 @@ func anyData() -> Data {
 func makeItemsJSON(_ items: [[String: Any]]) -> Data {
     let json = ["items": items]
     return try! JSONSerialization.data(withJSONObject: json)
+}
+
+func uniqueImageFeed() -> (models: [FeedImage], local: [LocalFeedImage]) {
+    let items = [uniqueImage(), uniqueImage()]
+    let localItems = items.map { feedItem in
+        LocalFeedImage(
+            id: feedItem.id,
+            url: feedItem.url,
+            description: feedItem.description,
+            location: feedItem.location
+        )
+    }
+    return (items, localItems)
+}
+
+func uniqueImage() -> FeedImage {
+    return FeedImage(
+        id: UUID(),
+        url: anyURL()
+    )
 }
 
 extension HTTPURLResponse {
